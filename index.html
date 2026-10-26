@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>БАБЛО</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;900&display=swap" rel="stylesheet">
@@ -14,7 +14,8 @@
 *{box-sizing:border-box}
 html{height:100%}
 body{margin:0;min-height:100%;background:radial-gradient(ellipse at 30% 30%,var(--felt) 0%,var(--felt-deep) 85%) fixed;color:var(--ink);
-  font-family:"Rubik",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+  font-family:"Rubik",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;overflow-x:hidden;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+button,.stage{touch-action:manipulation}
 button{font:inherit;color:inherit;cursor:pointer;border:0}
 button:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
 .app{display:grid;grid-template-columns:1fr minmax(320px,430px);gap:1.5rem;max-width:1120px;margin:0 auto;padding:1.5rem;min-height:100vh}
@@ -269,7 +270,7 @@ var AC=null,MUTE=false;try{MUTE=localStorage.getItem('bablo-mute')==='1'}catch(e
 function sfx(k){if(MUTE)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();var o=AC.createOscillator(),g=AC.createGain(),t=AC.currentTime,f={click:[660,990,.08],crit:[520,1560,.28],buy:[440,880,.18],quest:[523,1046,.35]}[k];o.type=k==='crit'?'square':'triangle';o.frequency.setValueAtTime(f[0],t);o.frequency.exponentialRampToValueAtTime(f[1],t+f[2]);g.gain.setValueAtTime(.08,t);g.gain.exponentialRampToValueAtTime(.001,t+f[2]);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+f[2])}catch(e){}}
 function flash(){if(reduce)return;var e=el('div','flash');document.body.appendChild(e);setTimeout(function(){e.remove()},400)}
 var mb=$('mute');mb.textContent=MUTE?'звук: выкл':'звук: вкл';mb.addEventListener('click',function(){MUTE=!MUTE;mb.textContent=MUTE?'звук: выкл':'звук: вкл';try{localStorage.setItem('bablo-mute',MUTE?'1':'0')}catch(e){}if(!MUTE)sfx('buy')});
-addEventListener('pagehide',save);
+addEventListener('pagehide',save);document.addEventListener('gesturestart',function(e){e.preventDefault()});
 calc();
 if(S.ts&&ps){var away=Math.min((Date.now()-S.ts)/1000,28800);if(away>60){var off=Math.floor(ps*away*.5);earn(off);toast('Пока тебя не было: +$'+fmt(off))}}
 update();
